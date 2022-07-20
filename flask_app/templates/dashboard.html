@@ -1,0 +1,61 @@
+{% extends "index.html" %} {% block content %}
+
+<div class="container">
+  <nav class="d-flex justify-content-between align-items-center col-12">
+    <h1 class="text-center text-success">Welcome, {{user.first_name}}!!!</h1>
+
+    <div class="d-flex col-4 justify-content-around">
+      <a href="/new/recipe" class="btn btn-warning">+ Create</a>
+      <a href="/logout" class="btn btn-secondary">Logout</a>
+    </div>
+  </nav>
+  <h5>All posted recipes:</h5>
+  <div class="col-8 mx-auto">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Under</th>
+          <th>Posted By</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      
+      <tbody>
+        {% for recipe in recipes %}
+        <tr>
+          <!-- Name of Recipe -->
+          <td>{{recipe.name}}</td>
+
+          {% if recipe.under_30 %}
+          <td>Yes</td>
+          {% else %}
+          <td>No</td>
+          {% endif %}
+          <!-- UNDEDER 30 MINUTES???? -->
+
+          <!-- Posted By -->
+          <td>{{recipe.first_name}}</td>
+
+          <!-- ONLY LOGGED in Users are allowed to EDIT/DELETE-->
+          <td>
+            <a href="/recipe/{{recipe.id}}" class="btn btn-info"
+              >| View Recipe |</a
+            >
+            {% if recipe.user_id == session.id %}
+            <a href="/edit/recipe/{{recipe.id}}" class="btn btn-warning"
+              >| Edit |</a
+            >
+            <a href="/destroy/recipe/{{recipe.id}}" class="btn btn-danger"
+              >| Delete |</a
+            >
+            {% endif %}
+          </td>
+
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
